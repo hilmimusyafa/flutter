@@ -335,7 +335,7 @@ void main() {
 // A helper function to simulate fetching data at runtime
 String fetchUserId() {
   // In a real app, this would be an API call.
-  return 'user-budi-001';
+  return 'user-caelus-001';
 }
 ```
 
@@ -343,7 +343,7 @@ Maka akan keluar output :
 
 ```
 API Key: xyz-startup-key-12345
-User ID: user-budi-001
+User ID: user-caelus-001
 Initial Cart Total: 0.0
 Updated Cart Total: 50.99
 ```
@@ -383,7 +383,7 @@ Dasar penerapan kode :
 int userAge = 25;
 double productPrice = 149.99;
 bool isUserActive = true;
-String userName = 'Budi';
+String userName = 'Himeko';
 
 // Dart juga punya 'num' yang bisa jadi 'int' atau 'double'
 num temperature = 26.5; 
@@ -453,7 +453,7 @@ Data dari server (API) untuk startup hampir selalu berbentuk `Map` (untuk satu o
 Analogi Sederhana :
 
 - `List` : Gerbong kereta. Setiap gerbong punya nomor (index 0, 1, 2) dan membawa muatan (nilai).
-- `Map` : Kamus. `key` adalah "kata" (misal: 'nama'), dan `value` adalah "definisi"-nya (misal: 'Budi').
+- `Map` : Kamus. `key` adalah "kata" (misal: 'nama'), dan `value` adalah "definisi"-nya (misal: 'Kafka').
 
 Struktur Dasar Kode : 
 
@@ -468,13 +468,13 @@ String firstFeature = featureList[0]; // 'Profile'
 
 // Map
 Map<String, dynamic> userProfile = {
-  'name': 'Budi',
+  'name': 'Caelus',
   'age': 25,
   'isPremium': true
 };
 
 // Accesing Map
-String name = userProfile['name']; // 'Budi'
+String name = userProfile['name']; // 'Caelus'
 ```
 
 Best Practices Penggunaan :
@@ -539,7 +539,7 @@ Email: caelus@startup.com
 Is Verified: true
 ```
 
-Untuk mengakses [1.2.2.2-1-CollectionDataType.dart](../../code/1.2.2.2-1-CollectionDataType.dart)
+Untuk mengakses [1.2.2.2-1-CollectionDataType.dart](../../../code/1.2.2.2-1-CollectionDataType.dart)
 
 #### 1.2.2.3 Tipe Data Dinamis
 
@@ -614,36 +614,289 @@ Tried calling: toUpperCase()
 
 Hal ini terjadi karena method `toUpperCase` itu di peruntukkan untuk String, tapi si isi variable sudah di rubah angka atau bertipe data integer, maka dari itu method tersebut tidak bisa berjalan dan error.
 
-Bisa akses code [1.2.2.3-1-DynamicDataType.dart](../../code/1.2.2.3/1.2.2.3-1-DynamicDataType.dart)
+Bisa akses code [1.2.2.3-1-DynamicDataType.dart](../../../code/1.2.2.3/1.2.2.3-1-DynamicDataType.dart)
 
 ### 1.2.3 : String Manipulation & Interpolation
 
 #### 1.2.3.1 String Interpolation
 
-**Interpolation** merupakan cara mudah untuk memasukkan nilai variabel ke dalam sebuah `String`. **Interpolation** digunakan setiap kali perlu menampilkan data dinamis ke pengguna. (Misal: "Selamat datang, Budi!"). Ini adalah operasi yang paling umum dilakukan pada tipe data `String`.
+**Interpolation** merupakan cara mudah untuk memasukkan nilai variabel ke dalam sebuah `String`. **Interpolation** digunakan setiap kali perlu menampilkan data dinamis ke pengguna. (Misal: "Selamat datang, Caelus!"). Ini adalah operasi yang paling umum dilakukan pada tipe data `String`.
 
 Dasar Penerapan Kode : 
 
 ```dart
-String name = 'Budi';
+String name = 'Caelus';
 // Use $var for simple variable
 String greeting = 'Hello $name';
 
 int quantity = 5;
 double price = 10.0;
-// Use ${ekspresi} for property calculation or access
+// Use ${expression} for property calculation or access
 String total = 'Total: ${quantity * price}';
 ```
 
+Contoh implementasi kode : 
+
+1.2.3.1-1-StringInterpolation.dart
+
+```dart
+void main() {
+  // Case Study: Generating a welcome message and order summary
+
+  final String userName = 'Caelus';
+  final int itemsInCart = 3;
+  final double orderTotal = 85.50;
+
+  // Using $variable and ${expression}
+  String welcomeMessage = 'Welcome back, $userName!';
+  String orderSummary = 'You have $itemsInCart items in your cart. Total: \$${orderTotal.toStringAsFixed(2)}';
+
+  print(welcomeMessage);
+  print(orderSummary);
+}
+```
+
+Maka outputnya :
+
+```
+Welcome back, Caelus!
+You have 3 items in your cart. Total: $85.50
+```
+
+Dan bisa di akses kodenya di [1.2.3.1-1-StringInterpolation.dart](../../../code/1/1.2.3.1/1.2.3.1-1-StringInterpolation.dart)
 
 #### 1.2.3.2 String Manipulation
 
-### 1.2.4 : Null Safety
+Manipulation merupakan proses mengubah atau mendapatkan bagian dari String (misal : mengubah jadi huruf besar, memotong, mengganti). Manipulation digunakan untuk memformat data, membersihkan input pengguna, atau mengekstrak informasi. Ini adalah operasi yang paling umum dilakukan pada tipe data `String`.
 
-### 1.2.5 : Collections (List, Map, Set)
+Contoh dasar penerapan kode :
 
+```dart
+String text = '  Hello World  ';
+String upper = text.toUpperCase(); // '  HELLO WORLD  '
+String lower = text.toLowerCase(); // '  hello world  '
+String trimmed = text.trim(); // 'Hello World'
+bool contains = text.contains('World'); // true
+String replaced = text.replaceAll('Hello', 'Hi'); // '  Hi World  '
+```
+
+Contoh implementasi kode :
+
+```dart
+void main() {
+  // Case Study: Generating a welcome message and order summary
+  final String userName = 'Hilmi';
+  final int itemsInCart = 3;
+  final double orderTotal = 85.50;
+
+  // Example: Normalizing a user input (e.g., search query)
+  String rawSearchQuery = '  Flutter tutorial for beginners   ';
+  
+  // Clean up the input
+  String normalizedQuery = rawSearchQuery
+      .trim() // Remove leading/trailing whitespace
+      .toLowerCase() // Convert to lowercase
+      .replaceAll('beginners', 'experts'); // Replace text
+
+  print('Raw query: "$rawSearchQuery"');
+  print('Normalized query: "$normalizedQuery"');
+  print('Does query contain "flutter"? ${normalizedQuery.contains('flutter')}');
+}
+```
+
+Output kode :
+
+```
+Raw query: "  Flutter tutorial for beginners   "
+Normalized query: "flutter tutorial for experts"
+Does query contain "flutter"? true
+```
+
+Kode bisa di akses [1.2.3.2-1-StringManipulation.dart](../../../code/1/1.2.3.2/1.2.3.2-1-StringManipulation.dart)
+
+### 1.2.4 : Operators
+
+Operator adalah simbol khusus yang digunakan untuk melakukan operasi pada variabel dan nilai. Operator di Dart bermacam-macam :
+
+- Aritmatika : Untuk perhitungan matematis (`+`, `-`, `*`, `/`, `%` (modulo/sisa bagi)). Contoh nyatanya menghitung total harga, diskon, jumlah.
+- Perbandingan : Untuk membandingkan dua nilai, hasilnya selalu bool (`==` (sama dengan), `!=` (tidak sama dengan), `>`, `<`, `>=`, `<=`). Contoh nyatanya mengecek kondisi (misal: if (stokBarang > 0)).
+- Logika : Untuk menggabungkan ekspresi bool (&& (AND/dan), || (OR/atau), ! (NOT/bukan)). Contoh nyatanya menggabungkan kondisi (misal: if (isLoggedIn && isPremiumUser)).
+- Increment/Decrement : (++ (tambah 1), -- (kurang 1)).
+
+Contoh dasar penerapan kode :
+
+```dart
+// Aritmatika
+int total = 10 + 5; // 15
+int remainder = 10 % 3; // 1
+
+// Perbandingan
+bool isStockAvailable = 10 > 0; // true
+bool isUserBudi = 'Budi' == 'Budi'; // true
+
+// Logika
+bool canEnter = true && false; // false (AND)
+bool canView = true || false; // true (OR)
+bool isOffline = !true; // false (NOT)
+
+// Increment
+int counter = 0;
+counter++; // counter is now 1
+```
+
+Contoh implementasi kode :
+
+1.2.4-1-Operators.dart
+
+```dart
+void main() {
+  // Case Study: Logic for a startup's e-commerce 'Buy' button
+  
+  //--- Aritmethic ---
+  int itemQuantity = 3;
+  double itemPrice = 150.0;
+  double shippingFee = 10.0;
+  
+  double subTotal = itemQuantity * itemPrice;
+  double totalCost = subTotal + shippingFee;
+  
+  print('Subtotal: $subTotal');
+  print('Total Cost: $totalCost');
+
+  //--- Comparison ---
+  int stock = 5;
+  bool isStockAvailable = stock >= itemQuantity; // 5 >= 3 (true)
+  
+  double userBalance = 500.0;
+  bool hasEnoughBalance = userBalance >= totalCost; // 500.0 >= 460.0 (true)
+
+  print('Is stock available? $isStockAvailable');
+  print('Has enough balance? $hasEnoughBalance');
+
+  //--- Logics ---
+  // The 'Buy' button should only be enabled if...
+  // 1. Stock is available AND 2. User has enough balance
+  bool isBuyButtonEnabled = isStockAvailable && hasEnoughBalance;
+  
+  print('---');
+  print('Is Buy Button Enabled? $isBuyButtonEnabled');
+  
+  // Example of '||' (OR)
+  bool isPremiumUser = false;
+  bool hasVoucher = true;
+  bool canGetDiscount = isPremiumUser || hasVoucher;
+  print('Can get discount? $canGetDiscount'); // true
+}
+```
+
+Output kode :
+
+```
+Subtotal: 450.0
+Total Cost: 460.0
+Is stock available? true
+Has enough balance? true
+---
+Is Buy Button Enabled? true
+Can get discount? true
+```
+
+Kode bisa di akses di [1.2.4-1-Operators.dart](../../../code/1/1.2.4/1.2.4-1-Operators.dart)
+
+### 1.2.5 Null Safety
+
+Null Safety adalah fitur terbesar Dart. Ini adalah jaminan dari compiler bahwa sebuah variabel tidak bisa bernilai null (kosong/tidak ada nilai), kecuali jika diizinkan secara eksplisit. Tujuannya adalah untuk menghilangkan Null Pointer Error (eror paling umum yang menyebabkan aplikasi crash).
+
+Null Safety adalah fitur terbesar Dart. Ini adalah jaminan dari compiler bahwa sebuah variabel tidak bisa bernilai null (kosong/tidak ada nilai), kecuali jika diizinkan secara eksplisit. Tujuannya adalah untuk menghilangkan Null Pointer Error (eror paling umum yang menyebabkan aplikasi crash).
+
+Analogi sederhana :
+
+- Dart (Tanpa Null Safety): Setiap kotak bisa jadi kosong. Setiap kali mau mengambil isi kotak, harus berdoa semoga tidak kosong. Jika kosong, barang (aplikasi) pecah.
+- Dart (Dengan Null Safety): Setiap kotak DIJAMIN punya isi. Jika perlu membuat kotak yang boleh kosong, harus diberi stiker peringatan "AWAS, MUNGKIN KOSONG" (?).
+
+
+Struktur kode dan sintaks : 
+
+- `String name = 'Caelus';` : Non-Nullable (Default). `name` tidak boleh `null`. Wajib diisi nilai.
+- `String? description;` : Nullable (Tanda `?`). `description` boleh `null`. Jika diakses, compiler akan memaksa untuk mengeceknya.
+- `description!` : Assertion Operator (`!`). "Saya (developer) 100% yakin `description` tidak `null` saat ini". Jika ternyata `null`, aplikasi akan crash. Hindari ini!
+- `description ?? 'No description'` : Null-aware Operator (`??`). "Jika `description` `null`, gunakan nilai di sebelah kanan ('No description')".
+- `user?.profile?.name` : Null-aware Access (`?.`). "Hanya akses `profile` jika `user` tidak `null`. Hanya akses `name` jika `profile` tidak `null`." Jika `user` `null`, seluruh ekspresi akan mengembalikan `null` (tanpa crash).
+- `late String errorMessage;` : Late Keyword (`late`). "Saya janji variabel `errorMessage` ini akan saya isi nilainya nanti (misal, di dalam `try-catch`) sebelum saya gunakan."
+
+Contoh kode implementasi : 
+
+1.2.5-1-NullSafety.dart
+
+```dart
+void main() {
+  // Case Study: Handling optional user profile data
+  
+  // Non-nullable: Must be initialized.
+  String username = 'marc7th_boyfriend';
+  
+  // Nullable: Can be null.
+  // Example: User hasn't set their bio yet.
+  String? userBio; 
+  
+  // userBio is currently null
+  print('Username: $username');
+  print('User Bio: $userBio');
+  
+  // --- Accessing Nullable Variables (The Safe Way) ---
+  
+  // 1. Using '??' (Default Value)
+  // We want to display 'No Bio' if userBio is null.
+  String bioToDisplay = userBio ?? 'No Bio';
+  print('Bio to display: $bioToDisplay');
+  
+  // Let's give userBio a value
+  userBio = 'Flutter Developer at Startup.id';
+  
+  // Run the same logic
+  bioToDisplay = userBio ?? 'No Bio';
+  print('Bio to display (after update): $bioToDisplay');
+
+  // 2. Using '?.' (Safe Navigation)
+  // We want to get the length of the bio, but only if the bio exists.
+  // If userBio was null, bioLength would be null (not crash).
+  int? bioLength = userBio?.length;
+  print('Bio length: $bioLength');
+  
+  // --- 'late' keyword ---
+  // Use 'late' when you know a variable will be set before it's read.
+  late String welcomeMessage;
+  
+  bool isLoggedIn = true;
+  if (isLoggedIn) {
+    welcomeMessage = 'Welcome back!';
+  } else {
+    welcomeMessage = 'Please log in.';
+  }
+  
+  // By this point, 'welcomeMessage' is guaranteed to be set.
+  print(welcomeMessage);
+}
+```
+
+Maka outputnya :
+
+```
+Username: march7th_boyfriend
+User Bio: null
+Bio to display: No Bio
+Bio to display (after update): Flutter Developer at Startup.id
+Bio length: 31
+Welcome back!
+```
+
+Kodenya bisa di akses [1.2.5-1-NullSafety.dart](../../..code/1.2.5/1.2.5-1-NullSafety.dart)
 
 ## 1.3 Kontrol Flow
+
+### 1.3.1 Contidional (`if`, `else if`, `else`)
+
+`if-else` adalah struktur kontrol paling dasar untuk membuat "percabangan" dalam kode. Ini memungkinkan program mengambil keputusan dan menjalankan blok kode yang berbeda berdasarkan kondisi (ekspresi) yang bernilai `true` atau `false`.
 
 ## 1.4 Struktur Data
 
