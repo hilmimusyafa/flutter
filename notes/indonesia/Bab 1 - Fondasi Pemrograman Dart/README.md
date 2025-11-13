@@ -443,7 +443,7 @@ Untuk mencoba kodenya [1.2.2.1-1-PrimitiveDataType.dart](../../../code/1/1.2.2.1
 
 #### 1.2.2.2 Tipe Data Koleksi (List, Map)
 
-Tipe data koleksi digunakan untuk menyimpan _beberapa_ nilai dalam satu variabel.
+Tipe data koleksi digunakan untuk menyimpan _beberapa_ nilai dalam satu variabel. Sebenarnya ini masuk ke dalam materi bagian Struktur Data yang akan di bahas nanti di bab sendiri, tapi pada kasus ini termasuk juga di tipe data koleksi, maka dari itu kita bahas :
 
 - `List` : Kumpulan nilai yang **berurutan**. Setiap elemen diakses menggunakan _index_ (angka mulai dari 0). Saat urutan penting. Contoh: daftar produk di keranjang belanja, daftar _timeline post_, daftar riwayat transaksi.
 - `Map` : Kumpulan pasangan **kunci:nilai** (`key:value`). Tidak berurutan, setiap nilai diakses menggunakan `key` unik. Saat perlu menyimpan data terstruktur dengan label yang jelas. Contoh: data profil pengguna (nama, umur, email), data JSON dari API, konfigurasi aplikasi.
@@ -894,12 +894,1142 @@ Kodenya bisa di akses [1.2.5-1-NullSafety.dart](../../..code/1.2.5/1.2.5-1-NullS
 
 ## 1.3 Kontrol Flow
 
-### 1.3.1 Contidional (`if`, `else if`, `else`)
+### 1.3.1 Perntaaan Percabangan
+
+#### 1.3.1.1 Contidional (`if`, `else if`, `else`)
 
 `if-else` adalah struktur kontrol paling dasar untuk membuat "percabangan" dalam kode. Ini memungkinkan program mengambil keputusan dan menjalankan blok kode yang berbeda berdasarkan kondisi (ekspresi) yang bernilai `true` atau `false`.
 
-## 1.4 Struktur Data
+Digunakan setiap kali program perlu memilih satu dari beberapa jalur : 
 
-## 1.5 Function & OOP Dasar
+- `if`: Untuk "Jika kondisi A benar, lakukan ini."
+- `else if` : Untuk "Jika A salah, tapi kondisi B benar, lakukan ini."
+- `else` : Untuk "Jika tidak ada kondisi di atas yang benar, lakukan ini."
 
-## 1.6 OOP Lanjutan
+Blok kondisi (`...` di dalam `if()`) hampir selalu menggunakan operator perbandingan (`==`, `>`, `!=`) dan operator logika (`&&`, `||`) yang dipelajari di 1.2.6 untuk menghasilkan nilai bool.
+
+Template Dasar Kode :
+
+```dart
+if (condition) {
+  // Block 1: Executed if 'condition' is true
+} else if (anotherCondition) {
+  // Block 2: Executed if 'condition' is false
+  // AND 'anotherCondition' is true
+} else {
+  // Block 3: Executed if all preceding conditions are false
+}
+```
+
+`condition` : Sebuah ekspresi yang harus menghasilkan nilai bool (true atau false).
+
+Contoh implementasi kode : 
+
+1.3.1.1-1-ConditionalControlFlow.dart
+
+```dart
+void main() {
+  bool isLoggedIn = false;
+
+  if (isLoggedIn) {
+    print('Welcome back, user!');
+  } else {
+    print('Please log in to continue.');
+  }
+}
+```
+
+Maka output untuk `1.3.1.1-1-ConditionalControlFlow.dart` :
+
+```
+Please log in to continue.
+```
+
+Untuk akses kode bisa di [1.3.1.1-1-ConditionalControlFlow.dart](../../../code/1/1.3.1.1/1.3.1.1-1-ConditionalControlFlow.dart)
+
+Contoh lagi untuk implementasi kode :
+
+1.3.1.1-2-ConditionalControlFlow.dart
+
+```dart
+void main() {
+  // This role would come from a database or API
+  String userRole = 'admin'; 
+
+  if (userRole == 'admin') {
+    print('Displaying Admin Dashboard...');
+    // showAdminPanel();
+  } else if (userRole == 'premium_user') {
+    print('Displaying Premium Content...');
+    // showPremiumContent();
+  } else {
+    print('Displaying Guest Homepage...');
+    // showGuestHomepage();
+  }
+}
+```
+
+Karena isi variable `userRole` adalah `admin`, maka outputnya adalah : 
+
+```
+Displaying Admin Dashboard...
+```
+
+Bisa akses kode di [1.3.1.1-2-ConditionalControlFlow.dart](../../../code/1/1.3.1.1/1.3.1.1-2-ConditionalControlFlow.dart)
+
+#### 1.3.1.2 Condtional : Ternary Operator
+
+Operator Ternary (`? :`) adalah shortcut (jalan pintas) untuk `if-else` sederhana yang hanya terdiri dari satu baris. Sangat sering digunakan untuk memberikan nilai ke variabel berdasarkan suatu kondisi.
+
+Analogi Sederhananya ini adalah pertanyaan `Benar/Salah`: `(Kondisi) ? (NilaiJikaBenar) : (NilaiJikaSalah)` "Sedang hujan? Bawa payung : Bawa kacamata hitam".
+
+Yang menjadi catatan di sini adalah gunakan hanya untuk logika yang sangat sederhana (satu kondisi, dua hasil). Jika logika menjadi rumit atau perlu nested (ternary di dalam ternary), segera ganti kembali ke `if-else` standar agar mudah dibaca.
+
+Template dasar kode :
+
+```dart
+// variable = (condition) ? valueIfTrue : valueIfFalse;
+
+String textToDisplay = (isLoggedIn) ? 'Logout' : 'Login';
+```
+
+Contoh implementasi kode :
+
+1.3.1.2-1-TernaryOperatorConditional.dart
+
+```dart
+void main() {
+  bool isUserSubscribed = true;
+
+  // Use ternary operator to assign a value to a variable
+  String buttonText = isUserSubscribed ? 'View Content' : 'Subscribe Now';
+
+  print('Button display text: $buttonText');
+}
+```
+
+Maka outputnya akan :
+
+```
+Button display text: View Content
+```
+
+Untuk membuka kode di [1.3.1.2-1-TernaryOperatorConditional.dart](../../../code/1/1.3.1.2/1.3.1.2-1-TernaryOperatorConditional.dart)
+
+Contoh lagi untuk perhitungan harga :
+
+1.3.1.2-2-TernaryOperatorConditional.dart
+
+```dart
+void main(){
+  // Example 2: Calculating price
+  double basePrice = 100.0;
+  bool isPremiumMember = false;
+
+  double finalPrice = isPremiumMember ? (basePrice * 0.8) : basePrice;
+  print('Final price: $finalPrice');
+}
+```
+
+Maka outputnya akan :
+
+```
+Final price: 100.0
+```
+
+Dan untuk akses kodenya bisa di [1.3.1.2-2-TernaryOperatorConditional.dart](../../../code/1/1.3.1.2/1.3.1.2-2-TernaryOperatorConditional.dart)
+
+#### 1.3.1.3 : Conditional `switch-case`
+
+`switch-case` adalah alternatif untuk `if-else if-else` yang panjang. switch lebih bersih digunakan ketika perlu membandingkan satu variabel dengan banyak nilai konstan yang berbeda (`String`, `int`, `enum`, dll).
+
+`switch` seperti tombol lift. Variabelnya adalah "tombol yang ditekan" (`switch (tombol)`). `case` adalah apa yang terjadi untuk setiap lantai (`case 1`:, `case 2:`, dst.). `default` adalah jika tombol yang ditekan tidak valid (misal: "tombol alarm").
+
+Template dasar kode :
+
+```dart
+var variableToTest = someValue;
+
+switch (variableToTest) {
+  case constantValue1:
+    // Code to run if variableToTest == constantValue1
+    break; // 'break' is mandatory to exit the switch
+
+  case constantValue2:
+    // Code to run if variableToTest == constantValue2
+    break;
+
+  default:
+    // Code to run if no other case matches
+    // This is like the final 'else'
+}
+```
+
+Best Practices Penggunaan :
+
+- Selalu sertakan `default` case untuk menangani nilai yang tidak terduga.
+- Setiap `case` (non-kosong) harus diakhiri dengan break (atau `return`, `throw`).
+- `switch` sangat baik digunakan dengan `enum` (tipe data khusus untuk konstanta).
+
+Contoh implementasi kode :
+
+1.3.1.3-1-SwitchCaseConditional.dart
+
+```dart
+void main() {
+  // This status would come from an API
+  String orderStatus = 'SHIPPED';
+
+  switch (orderStatus) {
+    case 'PENDING':
+      print('Order is pending payment.');
+      break;
+    case 'PROCESSING':
+      print('Order is being prepared by the seller.');
+      break;
+    case 'SHIPPED':
+      print('Order is on its way to the destination.');
+      break;
+    case 'DELIVERED':
+      print('Order has been delivered.');
+      break;
+    case 'CANCELLED':
+      print('Order has been cancelled.');
+      break;
+    default:
+      print('Unknown order status: $orderStatus');
+  }
+}
+```
+
+Karena isi di variablenya `SHIPPED` maka outputnya :
+
+```
+Order is on its way to the destination.
+```
+
+Untuk akses kode di [1.3.1.3-1-SwitchCaseConditional.dart](../../../code/1/1.3.1.3/1.3.1.3-1-SwitchCaseConditional.dart)
+
+### 1.3.2 Looping
+
+#### 1.3.2.1 For Loop
+
+`for` loop (perulangan `for`) digunakan untuk mengeksekusi blok kode berulang kali sebanyak jumlah yang sudah ditentukan.
+
+Digunakan ketika diketahui persis berapa kali perulangan harus terjadi. (Misal: "Lakukan ini 10 kali", "Proses setiap barang dari 5 barang di keranjang"). 
+
+Seperti instruksi "Lari putari lapangan 5 kali", proses itu dinamakan Looping : 
+
+- `int i = 0;` (Mulai hitungan dari 0).
+- `i < 5;` (Kondisi: Terus lari selama hitungan masih di bawah 5).
+- `i++` (Setelah 1 putaran selesai, tambahkan hitungan).
+
+Template dasar kode :
+
+
+```dart
+// for (initializer; condition; incrementer) {
+//   // Code block to repeat
+// }
+
+for (int i = 0; i < 5; i++) {
+  // This block will run 5 times (i=0, 1, 2, 3, 4)
+  print('Current number is: $i');
+}
+```
+
+Contoh kode implementasinya : 
+
+1.3.2.1-1-ForLoop.dart
+
+```dart
+void main() {
+  List<double> itemPrices = [50.0, 120.50, 30.25];
+  double total = 0.0;
+
+  // Use a for loop to iterate based on index
+  for (int i = 0; i < itemPrices.length; i++) {
+    total = total + itemPrices[i];
+    print('Added ${itemPrices[i]}, new total: $total');
+  }
+
+  print('---');
+  print('Final cart total: $total');
+}
+```
+
+Maka outputnya :
+
+```
+Added 50.0, new total: 50.0
+Added 120.5, new total: 170.5
+Added 30.25, new total: 200.75
+---
+Final cart total: 200.75
+```
+
+Disini terlihat Looping berdsarkan harga, setiap state harga di tambah ke total, sehingga bisa mendapatkan semua total dari yang ada di list tersebut.
+
+Kode bisa diakses di [1.3.2.1-1-ForLoop.dart](../../../code/1/1.3.2.1/1.3.2.1-1-ForLoop.dart)
+
+Catatan : Ada cara yang lebih baik untuk melakukan ini (yaitu for-in), yang akan dibahas nanti.
+
+#### 1.3.2.2 `while` Loop & `do-while`
+
+`while` loop (perulangan `while`) digunakan untuk mengeksekusi blok kode berulang kali selama (while) sebuah kondisi bernilai `true`. Jumlah perulangan tidak diketahui di awal.
+
+Sesuai namanya, perbedaan `while` dan `do-while` :
+
+- `while` : Cek kondisi dulu, baru jalankan kode. Bisa jadi tidak berjalan sama sekali jika kondisi awalnya false. Analogi sederhananya, "Selama pintu masih tertutup, teruslah mengetuk." (Jika pintu sudah terbuka, tidak akan mengetuk).
+- `do-while` : Jalankan kode dulu (1 kali), baru cek kondisi. Dijamin berjalan minimal satu kali. Analogi sederhananya, "Ketuk pintu sekali, lalu cek. Selama pintu masih tertutup, teruslah mengetuk." (Pasti mengetuk minimal sekali)."
+
+Template dasar kode `while` :
+
+```dart
+while (condition) {
+  // Code to repeat as long as 'condition' is true
+  // IMPORTANT: Something inside this block must
+  // eventually make the 'condition' false,
+  // or this will be an infinite loop!
+}
+```
+
+Template dasar kode `do-while` :
+
+```dart
+do {
+  // This code runs at least once
+} while (condition);
+```
+
+Contoh kode implementasi `while` :
+
+1.3.2.2-1-WhileLoop.dart
+
+```dart
+void main() {
+  int maxRetries = 3;
+  int currentRetry = 0;
+  bool isConnected = false;
+
+  print('Attempting to connect to payment gateway...');
+
+  while (!isConnected && currentRetry < maxRetries) {
+    currentRetry++;
+    print('Attempt $currentRetry: Connecting...');
+
+    // Simulate a failed connection
+    if (currentRetry < maxRetries) {
+      print('Connection failed. Retrying...');
+    } else {
+      // Simulate a successful connection on the last try
+      isConnected = true;
+      print('Connection successful!');
+    }
+  }
+
+  if (!isConnected) {
+    print('Failed to connect after $maxRetries attempts.');
+  }
+}
+```
+
+Karena mengulang sebanyak 3 kali dan rupanya disimulasikan mendapatkan nilai `true`, maka output akan :
+
+```
+Attempting to connect to payment gateway...
+Attempt 1: Connecting...
+Connection failed. Retrying...
+Attempt 2: Connecting...
+Connection failed. Retrying...
+Attempt 3: Connecting...
+Connection successful!
+```
+
+Kode dapat diakses di [1.3.2.2-1-WhileLoop.dart](../../../code/1/1.3.3.2/1.3.2.2-1-WhileLoop.dart)
+
+Dan berikut juga untuk kode versi `do-while` dengan simulasi yang sama :
+
+1.3.2.2-2-WhileLoop.dart
+
+```dart
+void main() {
+  int maxRetries = 3;
+  int currentRetry = 0;
+  bool isConnected = false;
+
+  print('Attempting to connect to payment gateway...');
+
+  do {
+    currentRetry++;
+    print('Attempt $currentRetry: Connecting...');
+
+    // Simulate a failed connection
+    if (currentRetry < maxRetries) {
+      print('Connection failed. Retrying...');
+    } else {
+      // Simulate a successful connection on the last try
+      isConnected = true;
+      print('Connection successful!');
+    }
+  } while (!isConnected && currentRetry < maxRetries);
+
+  if (!isConnected) {
+    print('Failed to connect after $maxRetries attempts.');
+  }
+}
+```
+
+Karena logika yang sama, hasil pun mengeluarkan sama seperti yang sebelumnya : 
+
+```
+Attempting to connect to payment gateway...
+Attempt 1: Connecting...
+Connection failed. Retrying...
+Attempt 2: Connecting...
+Connection failed. Retrying...
+Attempt 3: Connecting...
+Connection successful!
+```
+
+Pada akhirnya penerapan `while` dan `do-while` itu hampir mirip, disesuaikan lagi untuk gaya penulisan kode masing-masing.
+
+Kode dapat diakses di [1.3.2.2-2-WhileLoop.dart](../../../code/1/1.3.2.2/1.3.2.2-2-WhileLoop.dart)
+
+### 1.3.3 Looping Control : `break` & `continue`
+
+`break` dan `continue` digunakan untuk mengontrol jalannya loop (for, while) dari dalam : 
+
+- `break` : Menghentikan paksa seluruh loop dan keluar. Kode di bawah loop akan lanjut dieksekusi.
+- `continue` : Menghentikan iterasi saat ini saja dan langsung melompat ke iterasi berikutnya.
+
+Analogi Sederhananya, misal ada case tim sedang memeriksa 10 kotak produk : 
+
+- `break` : "Cari satu barang cacat. Jika ketemu di kotak ke-3, berhenti cari, tidak usah periksa kotak 4-10. Selesai."
+- `continue` : "Laporkan semua barang yang cacat. Jika kotak ke-3 cacat, laporkan. Jika kotak ke-4 bagus, abaikan (continue), lanjut periksa kotak ke-5." (Contoh yang lebih baik: "Pisahkan semua barang yang bukan mainan. Jika kotak 3 mainan, abaikan (continue), lanjut ke kotak 4").
+
+Template Dasar Kode :
+
+```dart
+for (int i = 0; i < 10; i++) {
+  if (conditionA) {
+    break; // Exit the for loop immediately
+  }
+  if (conditionB) {
+    continue; // Skip the rest of this iteration, go to i++
+  }
+  // Code to run if not A or B
+}
+```
+
+Contoh kasus implementasi `continue` :
+
+1.3.3-1-LoopingControlBreak.dart
+
+```dart
+void main() {
+  List<String> products = [
+    'Laptop', 
+    'Mouse', 
+    'Keyboard (Out of Stock)', 
+    'Monitor', 
+    'Webcam'
+  ];
+
+  print('--- Using continue ---');
+  // Goal: Print all available products
+  for (int i = 0; i < products.length; i++) {
+    if (products[i].contains('(Out of Stock)')) {
+      print('Skipping ${products[i]}...');
+      continue; // Skip this iteration, go to the next product
+    }
+    print('Processing product: ${products[i]}');
+  }
+}
+```
+
+Maka akan beroutput : 
+
+```
+--- Using continue ---
+Processing product: Laptop
+Processing product: Mouse
+Skipping Keyboard (Out of Stock)...
+Processing product: Monitor
+Processing product: Webcam
+```
+
+Untuk kodenya bisa diakses di [1.3.3-1-LoopingControlBreak.dart](../../../code/1/1.3.3/1.3.3-1-LoopingControlBreak.dart)
+
+Dan untuk contoh dari `break` :
+
+```dart
+void main() {
+  List<String> products = [
+    'Laptop', 
+    'Mouse', 
+    'Keyboard (Out of Stock)', 
+    'Monitor', 
+    'Webcam'
+  ];
+
+  print('\n--- Using break ---');
+  // Goal: Find the first 'Out of Stock' item and stop
+  for (int i = 0; i < products.length; i++) {
+    if (products[i].contains('(Out of Stock)')) {
+      print('Found Out of Stock item: ${products[i]}. Stopping process.');
+      break; // Exit the loop entirely
+    }
+    print('Checking product: ${products[i]}');
+  }
+}
+```
+
+Dan akan beroutput :
+
+```
+--- Using break ---
+Checking product: Laptop
+Checking product: Mouse
+Found Out of Stock item: Keyboard (Out of Stock). Stopping process.
+```
+
+Terlihat perbedaannya, yang satu kasusnya jika ada barang kosong maka akan tetap di lanjut, dan yang satu kasusnya jika ada barang yang kosong maka akan berhenti.
+
+Dan untuk akses kodenya bisa di [1.3.3-2-LoopingControlContinue.dart](../../../code/1/1.3.3/1.3.3-2-LoopingControlContinue.dart)
+
+### 1.3.4 Collection Control 
+
+#### 1.3.4.1 Collection Control `for-in` Loop
+
+`for-in` adalah cara yang lebih modern, bersih, dan aman untuk melakukan iterasi pada setiap elemen di dalam Collection (seperti `List` atau `Set`).
+
+Gunakan ini setiap kali tujuannya adalah memproses setiap elemen dalam `List`. Ini lebih baik daripada `for (int i = 0; ...)` karena tidak perlu mengelola index (`i`) dan menghindari error "index out of bounds". Ini adalah cara yang disukai untuk memproses `List`.
+
+Template dasar kode :
+
+```dart
+List<String> myList = ['a', 'b', 'c'];
+
+// for (var [variableName] in [listName]) { ... }
+for (var item in myList) {
+  // 'item' will be 'a', then 'b', then 'c'
+  print(item);
+}
+```
+
+Best Practices Penggunaan :
+
+- Selalu utamakan `for-in` daripada `for` standar jika tidak memerlukan index `i`.
+- Beri nama variabel yang jelas (misal: `for (var product in products)` bukan `for (var x in list)`).
+
+Contoh Kode Implementasi :
+
+1.3.4.1-1-CollectionControlForInLoop.dart
+
+```dart
+void main() {
+  // A list of features for the startup's app
+  final List<String> features = [
+    'User Profile', 
+    'Product Catalog', 
+    'Shopping Cart'
+  ];
+
+  print('--- App Features ---');
+  // Iterate over each element directly
+  for (final featureName in features) {
+    // 'featureName' holds the value of the element
+    print('- $featureName');
+  }
+}
+```
+
+Maka output yang dihasilkan :
+
+```
+--- App Features ---
+- User Profile
+- Product Catalog
+- Shopping Cart
+```
+
+Bisa akses kode di [1.3.4.1-1-CollectionControlForInLoop.dart
+](../../../code/1/1.3.4.1/1.3.4.1-1-CollectionControlForInLoop.dart)
+
+#### 1.3.4.2 Collection Control : Collection `if` & `for`
+
+Ini adalah fitur Dart yang sangat kuat yang memungkinkan penggunaan `if` dan `for` langsung di dalam deklarasi `List` (atau `Map/Set`) untuk membangun koleksi secara dinamis.
+
+Ini sangat penting di Flutter. Ini digunakan untuk membangun daftar widget (UI) secara dinamis :
+
+- Collection `if` : "Hanya masukkan elemen ini ke `List` jika kondisi `true`."
+- Collection `for` : "Lakukan looping dan masukkan hasil dari setiap iterasi ke dalam `List` ini."
+
+Hubungannya dengan Konsep Lain Ini seperti `if` dan `for-in` yang ditempatkan di dalam `List`.
+
+Dasar template kode :
+
+```dart
+bool includeAdmin = true;
+List<String> productNames = ['Laptop', 'Mouse'];
+
+List<String> menuItems = [
+  'Home',
+  'Profile',
+  // Collection 'if'
+  if (includeAdmin) 'Admin Panel', 
+
+  // Collection 'for'
+  for (var product in productNames) 'Buy $product'
+];
+```
+
+Dan berikut juga contoh dari kode implementasinya :
+
+1.3.4.2-1-CollectionControlIfFor.dart
+
+```dart
+void main() {
+  // Data that would come from app state
+  bool isUserAdmin = true;
+  bool isPremiumSubscriber = false;
+  List<String> availableCourses = ['Dart Basics', 'Flutter UI'];
+
+  // Build a dynamic list of menu items
+  List<String> navigationMenu = [
+    'Home',
+    'Profile',
+
+    // Collection 'if': Show 'Premium' only if subscribed
+    if (isPremiumSubscriber) 'Premium Content',
+
+    // Collection 'if': Show 'Admin' only if admin
+    if (isUserAdmin) 'Admin Dashboard',
+
+    // Collection 'for': Add all available courses
+    for (var course in availableCourses) 'View Course: $course',
+
+    'Logout'
+  ];
+
+  print('--- Generated Menu ---');
+  // Print the final list
+  for (var item in navigationMenu) {
+    print(item);
+  }
+}
+```
+
+Dan outputnya :
+
+```
+--- Generated Menu ---
+Home
+Profile
+Admin Dashboard
+View Course: Dart Basics
+View Course: Flutter UI
+Logout
+```
+
+Dan untuk percobaan kodenya ada di [1.3.4.2-1-CollectionControlIfFor.dart](../../../code/1/1.3.4.2/1.3.4.2-1-CollectionControlIfFor.dart)
+
+## 1.4 Struktur Data & Manipulasi Koleksi
+
+### 1.4.1 : List (Operasi Lanjutan)
+
+Ya, di ulang lagi, `List` adalah kumpulan data yang terurut dan memiliki indeks. Ini adalah struktur data yang paling sering digunakan di Flutter. Setiap elemen memiliki posisi nomor (dimulai dari 0).
+
+Digunakan ketika urutan data itu penting atau ketika data boleh duplikat. Contoh: Daftar pesan di aplikasi chat, daftar produk di halaman beranda, atau daftar notifikasi.
+
+Di Flutter, `List` adalah bahan baku utama untuk widget `ListView` dan `Column`. Analogi sederhananya mungkin, Daftar belanjaan atau rak buku. Buku pertama ada di posisi 0, buku kedua di posisi 1, dan seterusnya.
+
+Template Dasar Kode : 
+
+```dart
+// List<TipeData> nameVariabel = [element1, element2];
+List<String> startupNames = ['Gojek', 'Tokopedia'];
+```
+
+Operasi umum pada `List` : 
+
+- `add(item)` : Menambah item di akhir.
+- `insert(index, item)` : Menyisipkan item di posisi tertentu.
+- `remove(item)` : Menghapus item tertentu.
+- `length` : Mendapatkan jumlah item.
+
+Ingat, untuk penggunaan terbaik. Selalu tentukan tipe datanya (Generics) secara eksplisit, misal `List<int>` bukan hanya `List`. Dan gunakan `final` jika variabel `List` itu sendiri tidak akan diganti dengan `List` baru (meskipun isinya bisa berubah).
+
+Contoh Implementasi kode :
+
+1.4.1-1-List.dart
+
+```dart
+void main() {
+  // Case Study: Managing a list of investors for a startup pitch
+  
+  // 1. Declaration
+  // Explicitly typed list of Strings
+  final List<String> investors = ['Alpha Capital', 'Beta Ventures'];
+  
+  print('Initial Investors: $investors');
+
+  // 2. Adding Data
+  investors.add('Gamma Angel Fund');
+  print('After adding one: $investors');
+
+  // 3. Accessing Data (Index starts at 0)
+  String firstInvestor = investors[0];
+  print('Lead Investor: $firstInvestor');
+
+  // 4. Removing Data
+  investors.remove('Beta Ventures'); // Investor pulled out
+  print('Current Investors: $investors');
+  
+  // 5. Updating Data
+  investors[0] = 'Alpha Capital Global'; // Name change
+  print('Updated List: $investors');
+}
+```
+
+Dan outputnya akan seperti ini :
+
+```
+Initial Investors: [Alpha Capital, Beta Ventures]
+After adding one: [Alpha Capital, Beta Ventures, Gamma Angel Fund]
+Lead Investor: Alpha Capital
+Current Investors: [Alpha Capital, Gamma Angel Fund]
+Updated List: [Alpha Capital Global, Gamma Angel Fund]
+```
+
+Untuk akses kode bisa di [1.4.1-1-List.dart](../../../code/1/1.4.1.1/1.4.1-1-List.dart)
+
+### 1.4.2 : Set (Himpunan Unik)
+
+`Set` adalah kumpulan data yang tidak berurut dan wajib unik. Tidak boleh ada dua data yang sama persis di dalam `Set`. Digunakan ketika perlu memastikan tidak ada duplikasi. Contoh: Menyimpan daftar tags artikel (tidak boleh ada dua tag "Teknologi"), atau menyimpan ID pengguna yang sudah membaca notifikasi.
+
+Perbedaan dengan `List` adalah `Set` menggunakan kurung kurawal `{}` (seperti `Map`, tapi tanpa kunci), sedangkan `List` menggunakan kurung siku `[]`. Pencarian data `(contains)` di `Set` jauh lebih cepat daripada di `List` untuk data jumlah besar.
+
+Analogi Sederhanannya, kantong kelereng ajaib di mana jika memasukkan kelereng merah padahal sudah ada kelereng merah di dalamnya, kelereng baru itu akan lenyap. Hanya satu dari setiap jenis yang bisa masuk. Gunakan Set untuk memfilter duplikat dari sebuah `List` (dengan `list.toSet().toList()`).
+
+Template dasar kode : 
+
+```dart
+// Set<TipeData> namaVariabel = {elemen1, elemen2};
+Set<String> tags = {'Mobile', 'Web'};
+```
+
+Contoh kode implementasinya : 
+
+1.4.2-1-Set.dart
+
+```dart
+void main() {
+  // Case Study: Managing unique tags for a startup blog post
+  
+  // 1. Declaration
+  // Note the use of curly braces {}
+  final Set<String> articleTags = {'Startup', 'Funding', 'Tech'};
+  
+  print('Initial Tags: $articleTags');
+
+  // 2. Attempting to add duplicate
+  // 'Tech' is already in the set. This operation will be ignored.
+  bool isAdded = articleTags.add('Tech'); 
+  
+  print('Was "Tech" added? $isAdded'); // Output: false
+  print('Tags after duplicate attempt: $articleTags'); // No change
+
+  // 3. Adding new unique item
+  articleTags.add('Growth');
+  print('Tags after adding "Growth": $articleTags');
+
+  // 4. Checking existence (Very fast operation)
+  bool hasFundingTag = articleTags.contains('Funding');
+  print('Contains "Funding"? $hasFundingTag');
+}
+```
+
+Maka akan berouput :
+
+```
+Initial Tags: {Startup, Funding, Tech}
+Was "Tech" added? false
+Tags after duplicate attempt: {Startup, Funding, Tech}
+Tags after adding "Growth": {Startup, Funding, Tech, Growth}
+Contains "Funding"? true
+```
+
+Kodenya ada di [1.4.2-1-Set.dart](../../../code/1/1.4.2/1.4.2-1-Set.dart)
+
+Kita uji coba lagi untuk memaksa menambahkan tags yang sudah ada :
+
+1.4.2-2-SetDuplicateTest.dart
+
+```dart
+void main() {
+  // Case Study: Managing unique tags for a startup blog post
+  final Set<String> articleTags = {'Startup', 'Funding', 'Tech'};
+  
+  print('Initial Tags: $articleTags');
+  print('Total Tags: ${articleTags.length}\n');
+
+  // 1. Attempting to add duplicate multiple times
+  print('--- Trying to add duplicate "Tech" three times ---');
+  bool add1 = articleTags.add('Tech');
+  bool add2 = articleTags.add('Tech');
+  bool add3 = articleTags.add('Tech');
+  
+  print('Result of first add: $add1');
+  print('Result of second add: $add2');
+  print('Result of third add: $add3');
+  print('Tags after duplicate attempts: $articleTags');
+  print('Total Tags: ${articleTags.length}\n');
+
+  // 2. Adding new unique tag
+  print('--- Adding unique tag "Growth" ---');
+  bool addedGrowth = articleTags.add('Growth');
+  print('Was "Growth" added? $addedGrowth');
+  print('Tags after adding "Growth": $articleTags');
+  print('Total Tags: ${articleTags.length}');
+}
+```
+
+Dan bisa di lihat dari output : 
+
+```
+Initial Tags: {Startup, Funding, Tech}
+Total Tags: 3
+
+--- Trying to add duplicate "Tech" three times ---
+Result of first add: false
+Result of second add: false
+Result of third add: false
+Tags after duplicate attempts: {Startup, Funding, Tech}
+Total Tags: 3
+
+--- Adding unique tag "Growth" ---
+Was "Growth" added? true
+Tags after adding "Growth": {Startup, Funding, Tech, Growth}
+Total Tags: 4
+```
+
+Dan ya, tetap sama hasilnya, tidak bisa selagi data sudah ada di dalam `Set`.
+
+Untuk mencoba kode bisa di [1.4.2-2-SetDuplicateTest.dart](../../../code/1/1.4.2/1.4.2-2-SetDuplicateTest.dart)
+
+### 1.4.3 : Map (Kamus / Key-Value)
+
+`Map` adalah objek yang mengasosiasikan keys (kunci) dan values (nilai). Setiap kunci harus unik, tetapi nilai boleh sama. Map ini adalah struktur data terpenting untuk komunikasi dengan Backend/API. Format JSON (Javascript Object Notation) dipresentasikan sebagai Map di Dart. Digunakan untuk menyimpan data objek terstruktur seperti "User", "Product", atau "Config".
+
+Analogi sederhananya kamus. Kata adalah Key, definisi adalah Value. Atau loker penyimpanan: Nomor loker adalah Key, barang di dalamnya adalah Value. Dan ingat, selalu gunakan `Map<String, dynamic>` saat berurusan dengan data JSON.
+
+Lagi-lagi sintaks dasar template kode : 
+
+```dart
+// Map<TipeKey, TipeValue> namaVariabel = {key: value};
+Map<String, dynamic> user = {
+  'name': 'Budi',
+  'age': 20
+};
+```
+
+Parameter :
+
+- `String` : Biasanya digunakan sebagai tipe Key.
+- `dynamic` : Sering digunakan sebagai tipe Value karena satu Map bisa berisi String, int, dan bool sekaligus
+
+Contoh kode implementasi :
+
+1.4.3-1-Map.dart
+
+```dart
+void main() {
+  // Case Study: Representing a Product detail from an API response
+  
+  // 1. Declaration
+  // Key is String, Value is dynamic (can be String, double, bool)
+  final Map<String, dynamic> productData = {
+    'id': 'prod_001',
+    'name': 'Premium Coffee',
+    'price': 25000.0,
+    'isAvailable': true,
+    'tags': ['Beverage', 'Hot'] // Value can even be a List!
+  };
+
+  print('Product Name: ${productData['name']}');
+
+  // 2. Adding/Updating Data
+  // If key exists, it updates. If not, it adds.
+  productData['stock'] = 50; // New key
+  productData['price'] = 27000.0; // Update existing key
+
+  print('Updated Price: ${productData['price']}');
+  print('Stock Count: ${productData['stock']}');
+
+  // 3. Handling Missing Keys
+  // Accessing a non-existent key returns null
+  print('Discount: ${productData['discount']}'); // Output: null
+}
+```
+
+Outputnya bisa :
+
+```
+Product Name: Premium Coffee
+Updated Price: 27000.0
+Stock Count: 50
+Discount: null
+```
+
+Untuk akses kodenya di [1.4.3-1-Map.dart](../../../code/1/1.4.3/1.4.3-1-Map.dart)
+
+### 1.4.4 : Manipulasi Collection (Higher-Order Functions)
+
+Dart menyediakan metode canggih untuk memproses `List` atau `Map` tanpa menggunakan looping manual (`for`). Metode seperti `.map()`, `.where()`, dan `.toList()` adalah fondasi pemrograman declarative di Flutter. Penggunaan jelasnya seperi ini : 
+
+- `.map()` : Mengubah format data. (Contoh: Dari data JSON menjadi Widget Flutter).
+- `.where()` : Memfilter data. (Contoh: Hanya tampilkan produk yang stoknya > 0).
+
+Teknik ini menggantikan penggunaan `for` loop yang panjang menjadi satu baris kode yang bersih (clean code).
+
+Template dasar kode `.map` : 
+
+```dart
+var newList = oldList.map((item) {
+   return transform(item);
+}).toList();
+```
+
+Template dasar kode `.where` :
+
+```dart
+var filteredList = oldList.where((item) {
+   return condition(item); // return true to keep
+}).toList();
+```
+
+Fungsi-fungsi ini mengembalikan Iterable (data malas/lazy). Wajib diakhiri dengan `.toList()` untuk mengubahnya kembali menjadi List standar agar bisa dipakai.
+
+Contoh implementasi kode :
+
+1.4.4-1-ManipulationCollection.dart
+
+```dart
+void main() {
+  // Case Study: Processing raw transaction data for a dashboard
+  
+  List<Map<String, dynamic>> transactions = [
+    {'id': 't1', 'amount': 100.0, 'status': 'success'},
+    {'id': 't2', 'amount': 50.0, 'status': 'pending'},
+    {'id': 't3', 'amount': 200.0, 'status': 'success'},
+    {'id': 't4', 'amount': 0.0, 'status': 'failed'},
+  ];
+
+  print('--- Original Data ---');
+  print(transactions);
+
+  // 1. Filtering (.where)
+  // Case: We only want to calculate revenue from 'success' transactions
+  var successfulTransactions = transactions.where((tx) {
+    return tx['status'] == 'success';
+  }).toList();
+
+  print('\n--- Filtered Data (Success only) ---');
+  print(successfulTransactions);
+
+  // 2. Transformation (.map)
+  // Case: We need a list of just the transaction IDs to display simply
+  List<String> transactionIds = transactions.map((tx) {
+    return 'ID: ${tx['id']}';
+  }).toList();
+
+  print('\n--- Transformed Data (IDs only) ---');
+  print(transactionIds);
+
+  // 3. Chaining (Advanced)
+  // Case: Get amounts of successful transactions only
+  // Steps: Filter success -> Map to amount -> Convert to List
+  List<double> successAmounts = transactions
+      .where((tx) => tx['status'] == 'success') // Filter
+      .map((tx) => tx['amount'] as double)      // Transform
+      .toList();                                // Finalize
+
+  print('\n--- Chained Operation (Success Amounts) ---');
+  print(successAmounts);
+}
+```
+
+Maka output :
+
+```
+--- Original Data ---
+[{id: t1, amount: 100.0, status: success}, {id: t2, amount: 50.0, status: pending}, {id: t3, amount: 200.0, status: success}, {id: t4, amount: 0.0, status: failed}]
+
+--- Filtered Data (Success only) ---
+[{id: t1, amount: 100.0, status: success}, {id: t3, amount: 200.0, status: success}]
+
+--- Transformed Data (IDs only) ---
+[ID: t1, ID: t2, ID: t3, ID: t4]
+
+--- Chained Operation (Success Amounts) ---
+[100.0, 200.0]
+```
+
+Dan code bisa di akses [1.4.4-1-ManipulasiCollection.dart](../../../code/1/1.4.4/1.4.4-1-ManipulasiCollection.dart) 
+
+## 1.5 Function 
+
+### 1.5.1 : Function Declaration & Parameters (Positional vs Named)
+
+Function (fungsi) adalah blok kode yang dibungkus dan diberi nama agar bisa digunakan berulang kali. Parameter adalah input yang diterima fungsi untuk diproses. Di Dart (dan Flutter), ada dua jenis parameter utama :
+
+1. Positional : Parameter wajib yang urutannya harus sesuai.
+2. Named : Parameter opsional (kecuali ditandai required) yang dipanggil dengan menyebutkan namanya. Ini adalah sintaks paling sering digunakan di Widget Flutter.
+
+Digunakan untuk memecah kode yang panjang menjadi bagian-bagian kecil (modular). Named parameter digunakan untuk meningkatkan keterbacaan kode, terutama jika sebuah fungsi memiliki banyak konfigurasi (seperti Widget di Flutter).
+
+Analogi Sederhananya Fungsi seperti blender : 
+
+- Input (Parameter) : Buah, Air, Gula.
+- Proses : Menghancurkan dan mencampur.
+- Output (Return Value) : Jus.
+
+Template Dasar (Positional) :
+
+```dart
+ReturnType functionName(Type param1, Type param2) {
+  // logic
+  return value;
+}
+```
+
+Template Dasar (Named - Gaya Flutter), gunakan kurung kurawal `{}`:
+
+```dart
+ReturnType functionName({required Type param1, Type? param2}) {
+  // logic
+  return value;
+}
+```
+
+Best Practices : Gunakan Named Parameters jika fungsi memiliki lebih dari 2 argumen atau jika tipe datanya sama (untuk menghindari kebingungan posisi).
+
+Contoh kode implementasi lanjutan :
+
+1.5.1-1-FunctionParameters.dart
+
+```dart
+void main() {
+  // Case Study: Calculating simple startup metrics
+
+  // 1. Calling a standard Positional Function
+  // Order matters: Revenue first, then Cost.
+  double profit = calculateProfit(1000.0, 400.0);
+  print('Profit: \$$profit');
+
+  // 2. Calling a Named Parameter Function (Flutter Style)
+  // Order does NOT matter. Readability is higher.
+  // Useful when creating complex objects like User Profiles.
+  createUserProfile(
+    username: 'founder_001',
+    email: 'ceo@startup.id', 
+    age: 25 // Optional parameter
+  );
+}
+
+// --- Function Definitions ---
+
+// Positional Parameters
+double calculateProfit(double revenue, double cost) {
+  return revenue - cost;
+}
+
+// Named Parameters ({})
+// 'required' means it must be provided. 
+// 'int? age' implies age is optional and can be null.
+void createUserProfile({
+  required String username, 
+  required String email, 
+  int? age
+}) {
+  print('Creating user: $username ($email)');
+  if (age != null) {
+    print('User age: $age');
+  }
+}
+```
+
+Dan akan beroutput dari 2 fungsi :
+
+```
+Profit: $600.0
+Creating user: founder_001 (ceo@startup.id)
+User age: 25
+```
+
+Bisa di akses di [1.5.1-1-FunctionParameters.dart](../../../code/1/1.5.1/1.5.1-1-FunctionParameters.dart)
+
+### 1.5.2 Anonymous Function & Arrow Syntax (`=>`)
+
+Fungsi tanpa nama. Biasanya dibuat langsung di tempat ia dibutuhkan (misal: sebagai argumen fungsi lain). Arrow Syntax (`=>`): Cara penulisan singkat untuk fungsi yang hanya berisi satu baris perintah dan langsung mengembalikan nilai (implicit return)
+
+Sangat sering digunakan di Flutter untuk event handler (seperti aksi saat tombol ditekan : `onPressed: () {}`) atau saat memanipulasi list (seperti `.map` atau `.where`). Analogi sederhananya seperti catatan tempel (sticky note) instruksi sekali pakai ("Tutup pintu saat keluar") yang ditempel langsung di pintu, tanpa perlu menulis prosedur resmi di buku manual.
+
+Template dasar :
+
+```dart
+// Anonymous Function block
+() {
+  // multiple lines of code
+}
+
+// Arrow Function (Fat Arrow)
+(param) => expression; // equivalent to { return expression; }
+```
+
+Contoh implementasi kode :
+
+1.5.2-1-AnonymousFunction.dart
+
+```dart
+void main() {
+  List<double> monthlyRevenues = [500.0, 1200.0, 3000.0];
+
+  // 1. Anonymous Function (Block style)
+  // Used when logic is complex (more than 1 line)
+  print('--- Monthly Report ---');
+  monthlyRevenues.forEach((revenue) {
+    double tax = revenue * 0.1;
+    print('Revenue: $revenue (Tax: $tax)');
+  });
+
+  // 2. Arrow Syntax (=>)
+  // Used for concise, single-line logic.
+  // Case: Converting all values to "thousands" format (3.0k)
+  // map() returns an Iterable, so we add toList()
+  List<String> formatted = monthlyRevenues.map((r) => '${r/1000}k').toList();
+  
+  print('\n--- Formatted Data ---');
+  print(formatted); // Output: [0.5k, 1.2k, 3.0k]
+}
+```
+
+Maka outuputnya : 
+
+```
+--- Monthly Report ---
+Revenue: 500.0 (Tax: 50.0)
+Revenue: 1200.0 (Tax: 120.0)
+Revenue: 3000.0 (Tax: 300.0)
+
+--- Formatted Data ---
+[0.5k, 1.2k, 3.0k]
+```
+
+Dan kodenya bisa diakses di [1.5.2-1-AnonymousFunction.dart](../../../code/1/1.5.2/1.5.2-1-AnonymousFunction.dart)
+
+## 1.6 OOP (Object Oriented Programming)
+
+### 1.6.1 Dasar OOP (Class, Object, Properties, Methods)
