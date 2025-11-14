@@ -2631,4 +2631,3 @@ Dan outputnya :
 ```
 
 Dan seperti biasa kode bisa diakses di [1.6.7-1-Mixin.dart](../../../code/1/1.6.7/1.6.7-1-Mixin.dart)
-
