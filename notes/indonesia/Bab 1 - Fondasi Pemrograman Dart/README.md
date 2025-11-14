@@ -2030,6 +2030,605 @@ Revenue: 3000.0 (Tax: 300.0)
 
 Dan kodenya bisa diakses di [1.5.2-1-AnonymousFunction.dart](../../../code/1/1.5.2/1.5.2-1-AnonymousFunction.dart)
 
+### 1.5.3 Procedure (Fungsi Tanpa Return Value)
+
+Procedure adalah fungsi yang tidak mengembalikan nilai (void). Biasanya digunakan untuk menjalankan aksi, seperti mencetak log, mengubah state, menambah item ke list, atau menampilkan pesan ke pengguna.
+
+Analogi sederhanannya adalah "Kerjakan sesuatu, tapi tidak perlu mengembalikan nilai". Kalau fungsi biasa seperti mesin jual otomatis yang memberikan barang, procedure seperti tombol lift: ditekan → melakukan aksi → selesai, tanpa ada “hasil” yang dikembalikan.
+
+Kenapa prosedur digunakan? Untuk memecah kode menjadi bagian kecil dan rapi, selain itu untuk menghindari pengulangan kode di banyak tempat. Pada Flutter umum terjadi seperti update UI, validasi form, trigger event, logging.
+
+Template dasar kode : 
+
+```dart
+// Procedure: fungsi tanpa return value
+void functionName(Type param) {
+  // aksi yang dilakukan
+}
+
+// Procedure tanpa parameter
+void sayHello() {
+  print('Hello!');
+}
+
+// Procedure dengan named parameters
+void logMessage({required String message, int level = 1}) {
+  print('[$level] $message');
+}
+```
+
+Contoh implementasi kode : 
+
+1.5.3-1-ProcedureExample.dart
+
+```dart
+void main() {
+  // 1. Simple procedure
+  print('--- User Logger ---');
+  logLogin('Caelus'); // memanggil procedure
+
+  // 2. List modifying procedure 
+  List<String> tasks = ['Review PR', 'Fix bug'];
+  addTask(tasks, 'Write documentation');
+
+  print('\n--- Updated Task List ---');
+  tasks.forEach((t) => print('- $t'));
+
+  // 3. Procedure with named parameters
+  print('\n--- System Log ---');
+  logSystem(message: 'Server started successfully');
+  logSystem(message: 'Low memory detected', level: 2);
+}
+
+// === PROCEDURES ===
+
+// Procedure 1: without return, only print log
+void logLogin(String username) {
+  print('User "$username" has logged in.');
+}
+
+// Procedure 2: getting list, and modified
+void addTask(List<String> list, String task) {
+  list.add(task);
+  print('Task "$task" added.');
+}
+
+// Procedure 3: usse named parameters
+void logSystem({required String message, int level = 1}) {
+  print('[Level $level] $message');
+}
+```
+
+Maka outputnya :
+
+```
+--- User Logger ---
+User "Caelus" has logged in.
+Task "Write documentation" added.
+
+--- Updated Task List ---
+- Review PR
+- Fix bug
+- Write documentation
+
+--- System Log ---
+[Level 1] Server started successfully
+[Level 2] Low memory detected
+```
+
+Dan bisa diakses kodenya di [1.5.3-1-ProcedureExample.dart](../../../code/1/1.5.3/1.5.3-1-ProcedureExample.dart)
+
 ## 1.6 OOP (Object Oriented Programming)
 
-### 1.6.1 Dasar OOP (Class, Object, Properties, Methods)
+### 1.6.1 Dasar OOP (Class, Object)
+
+OOP adalah paradigma pemrograman yang mengorganisasi kode berdasarkan objek, bukan sekadar fungsi dan logika. Objek ini membawa data dan perilaku dalam satu paket yang rapi, sehingga memudahkan pengembangan skala kecil maupun besar — termasuk di Flutter, yang memakai OOP di hampir semua komponennya.
+
+- `Class` : Cetakan atau blueprint yang mendefinisikan karakteristik (data) dan perilaku (fungsi).
+- `Object` : Wujud nyata (instance) yang dibuat berdasarkan Class.
+
+Analogi Sederhana :
+
+- `Class` : Sketsa arsitek untuk sebuah rumah.
+- `Object` : Rumah-rumah nyata yang dibangun berdasarkan sketsa tersebut (Rumah A, Rumah B).
+
+OOP ini selalu digunakan di Flutter. Setiap Widget (seperti Text, Container, Scaffold) adalah sebuah Object dari Class masing-masing.
+
+Template dasar kode :
+
+```dart
+class ClassName {
+  // Properties (Data)
+  // Methods (Behaviour)
+}
+
+// Make Object
+var objectName = ClassName();
+```
+
+Best Practices : Gunakan PascalCase untuk nama Class (`UserProfile`) dan camelCase untuk nama variabel/object (`userProfile`).
+
+Contoh implementasi kode :
+
+```dart
+// 1. Class Definition (Blueprint)
+class StartupProduct {
+  // Properties: Data owned by the product
+  String name = 'Untitled Product';
+  double price = 0.0;
+
+  // Method: Product behavior (e.g. showing details)
+  void showDetails() {
+    print('Product: $name | Price: \$$price');
+  }
+}
+
+void main() {
+  // 2. Object Creation (Realization)
+  
+  // Object 1: Cashier Application 
+  var product1 = StartupProduct();
+  product1.name = 'POS System';
+  product1.price = 150.0;
+  
+  // Object 2: Attendance Application
+  var product2 = StartupProduct();
+  product2.name = 'HR Attendance';
+  product2.price = 75.0;
+
+  // Call each object's method
+  product1.showDetails(); // Output: POS System...
+  product2.showDetails(); // Output: HR Attendance...
+}
+```
+
+Output kode :
+
+```
+Product: POS System | Price: $150.0
+Product: HR Attendance | Price: $75.0
+```
+
+Dan kode bisa diakses di [1.6.1-1-BasicOOP.dart](../../../code/1/1.6.1/1.6.1-1-BasicOOP.dart)
+
+### 1.6.2 Constructors & Properties 
+
+Constructor adalah bagian penting dari OOP Dart/Flutter. Tujuannya adalah mengatur data awal sebuah objek, memastikan semua property memiliki nilai yang valid sejak objek diciptakan.
+
+- Constructor : Fungsi spesial yang berjalan otomatis saat objek dibuat untuk menginisialisasi data.
+- Named Constructor : Varian constructor untuk membuat objek dengan skenario berbeda (misal: membuat user dari data JSON vs data manual).
+- Properties : Variabel dalam class. Di Flutter, properti seringkali bersifat final (tidak berubah setelah dibuat). 
+
+Digunakan saat ingin memastikan sebuah objek memiliki data yang valid sejak detik pertama ia dibuat.
+
+Perumpamaannya seperti ini :
+
+- Constructor : Seperti mengisi formulir data diri saat pertama kali membuat kartu identitas.
+- Named Construtor : Seperti paket khusus yang sudah disiapkan (Paket "Tamu", Paket "Premium", dan Paket "Default")
+- Properties : Seperti kolom-kolom data di kartu identitas (Nama, Alamat, dan Tanggal Lahir)
+
+Dasar brntuk Constructor : 
+
+```dart
+class Person {
+  String name;
+
+  Person(this.name); // Constructor
+}
+```
+
+Dasar bentuk Named Constructor : 
+
+```dart
+class Person {
+  String name;
+
+  Person(this.name); 
+  Person.unknown() : name = 'Unknown';
+}
+```
+
+Dan bagian pada propertiws yang ini :
+
+```dart
+final String username;
+```
+
+Contoh implementasi kode : 
+
+```dart
+class User {
+  // Properties
+  // 'final' means the value acts as a constant after initialization (Immutable)
+  final String username;
+  final String email;
+  final bool isPremium;
+
+  // 1. Primary Constructor (Named Parameters)
+  // This is the standard style for Flutter Widgets
+  User({
+    required this.username, 
+    required this.email, 
+    this.isPremium = false, // Default value
+  });
+
+  // 2. Named Constructor
+  // Useful for creating an 'Anonymous' user quickly
+  User.guest()
+      : username = 'Guest',
+        email = '',
+        isPremium = false;
+
+  // Method
+  void login() {
+    print('$username ($email) has logged in.');
+  }
+}
+
+void main() {
+  // Creating object with explicit parameters
+  var founder = User(
+    username: 'ceo_caelus', 
+    email: 'caelus@startup.id', 
+    isPremium: true
+  );
+
+  // Creating object using Named Constructor
+  var guestUser = User.guest();
+
+  founder.login();     // Output ceo_caelus...
+  guestUser.login();   // Output: Guest...
+}
+```
+
+Output kode : 
+
+```
+ceo_caelus (caelus@startup.id) has logged in.
+Guest () has logged in.
+```
+
+Kode bisa di akses di [1.6.2-1-Constructors.dart](../../../code/1/1.6.2/1.6.2-1-Constructors.dart)
+
+### 1.6.3 Encapsulation (Private Members, Getters, Setters)
+
+Encapsulation adalah konsep menyembunyikan detail internal objek dari dunia luar. Hanya data yang "aman" yang boleh diakses atau diubah. Di Dart, tidak ada kata kunci private. Sebagai gantinya, tanda garis bawah (`_`) di awal nama variabel/fungsi menandakan bahwa itu bersifat private (hanya bisa diakses di file yang sama).
+
+Analogi Sederhananya Dompet, orang lain boleh melihat warna dompet (Public), tapi tidak boleh langsung mengambil uang di dalamnya (Private). Mereka harus meminta pemiliknya untuk mengeluarkan uang (Method/Getter).
+
+Sintaks dan Struktur kode :
+
+```dart
+class BankAccount {
+  double _balance = 0; // Private (only access to this file)
+
+  // Getter (Safe way to read private data)
+  double get balance => _balance;
+
+  // Setter (Safe way to change private data with validation)
+  set deposit(double amount) {
+    if (amount > 0) _balance += amount;
+  }
+}
+```
+
+Contoh kode implementasinya :
+
+1.6.3-1-Encapsulation.dart
+
+```dart
+class EWallet {
+  // Private property: cannot be accessed directly from outside this file
+  double _balance = 0.0;
+
+  // Public Method to modify private data safely
+  void topUp(double amount) {
+    if (amount <= 0) {
+      print('Error: Amount must be positive');
+      return;
+    }
+    _balance += amount;
+    print('Top up success. New balance: $_balance');
+  }
+
+  // Public Method to read private data
+  double checkBalance() {
+    return _balance;
+  }
+}
+
+void main() {
+  var myWallet = EWallet();
+
+  // myWallet._balance = 1000; // ERROR: The setter '_balance' isn't defined.
+  
+  myWallet.topUp(50000);
+  print('Current Balance: ${myWallet.checkBalance()}');
+}
+```
+
+Maka outputnya adalah :
+
+```
+Top up success. New balance: 50000.0
+Current Balance: 50000.0
+```
+
+Dan kodenya bisa diakses di [1.6.3-1-Encapsulation.dart](../../../code/1/1.6.3/1.6.3-1-Encapsulation.dart)
+
+### 1.6.4 Inheritance (Pewarisan)
+
+Definisi inheritance di sini adalah Mekanisme di mana sebuah Class baru (Child/Subclass) mewarisi properti dan method dari Class yang sudah ada (Parent/Superclass). Bertujuan untuk Code Reusability (Gunakan kembali kode yang sama). Jangan menulis ulang logika yang sama untuk objek yang mirip.
+
+Konsep Inheritance digunakan ketika memiliki beberapa objek yang berbagi karakteristik dasar yang sama. Contoh: Mobil dan Motor sama-sama Kendaraan. Admin dan Customer sama-sama User.
+
+Sintaks Kata Kunci dari INheritance :
+
+- `extends` : Menandakan pewarisan.
+- `super` : Merujuk ke Parent Class.
+- `@override` : Menimpa/mengganti perilaku method milik Parent.
+
+Contoh implementasi kode : 
+
+1.6.3-1-Inheritance.dart
+
+```dart
+// Parent Class
+class Employee {
+  String name;
+  double salary;
+
+  Employee(this.name, this.salary);
+
+  void work() {
+    print('$name is working standard hours.');
+  }
+}
+
+// Child Class 1: Developer inherits from Employee
+class Developer extends Employee {
+  String programmingLanguage;
+
+  // Pass name & salary to Parent (super)
+  Developer(String name, double salary, this.programmingLanguage) 
+      : super(name, salary);
+
+  // Overriding: Changing the behavior of 'work'
+  @override
+  void work() {
+    print('$name is coding in $programmingLanguage.');
+  }
+}
+
+// Child Class 2: Manager inherits from Employee
+class Manager extends Employee {
+  Manager(String name, double salary) : super(name, salary);
+
+  @override
+  void work() {
+    print('$name is managing the team.');
+  }
+}
+
+void main() {
+  var dev = Developer('March7th', 1000, 'Dart');
+  var mgr = Manager('Caelus', 2000);
+
+  dev.work(); 
+  mgr.work();
+}
+```
+
+Outputnya kita coba : 
+
+```
+March7th is coding in Dart.
+Caelus is managing the team.
+```
+
+Aksses kodenya di [1.6.3-1-Inheritance.dart](../../../code/1/1.6.4/1.6.4-1-Inheritance.dart)
+
+### 1.6.5 Abstract Class & Interface (Polymorphism)
+
+Abstract Class merupakan Class yang "belum lengkap" dan tidak bisa dibuat objeknya secara langsung. Ia hanya berfungsi sebagai kerangka dasar bagi Class turunannya.
+
+Sedangkan, untuk Polymorphism, yaitu Kemampuan objek untuk berubah bentuk. Sebuah variabel bertipe Parent bisa diisi oleh objek Child apa pun.
+
+Biasanya digunakan saat ingin memaksakan standar tertentu. Contoh : Semua metode pembayaran (Ovo, GoPay) wajib punya fungsi pay(), tapi cara pay()-nya berbeda-beda. Perumpamaannya
+seperti blueprint rumah dasar — ada aturan wajibnya, tapi belum bisa dijadikan rumah langsung.
+
+Sintaks dan strukutrnya :
+
+```dart
+abstract class Template {
+  void wajibDiisi(); // Abstract method (tanpa body)
+  void opsiBebas() { ... } // Concrete method (dengan body)
+}
+```
+
+Contoh implementasi kodenya :
+
+1.6.5-1-Inheritance.dart
+
+```dart
+// Abstract Base Class
+// Cannot be instantiated: var p = PaymentMethod() is Error.
+abstract class PaymentMethod {
+  void processPayment(double amount); // Abstract: Must be implemented by children
+}
+
+class CreditCard extends PaymentMethod {
+  @override
+  void processPayment(double amount) {
+    print('Processing \$$amount via Visa/Mastercard...');
+  }
+}
+
+class EWallet extends PaymentMethod {
+  @override
+  void processPayment(double amount) {
+    print('Processing \$$amount via GoPay/Ovo...');
+  }
+}
+
+void main() {
+  // Polymorphism: List of 'PaymentMethod', but contains different implementations
+  List<PaymentMethod> payments = [
+    CreditCard(),
+    EWallet()
+  ];
+
+  double cartTotal = 150.0;
+
+  // The loop treats them all as 'PaymentMethod', 
+  // but each executes its own logic.
+  for (var method in payments) {
+    method.processPayment(cartTotal);
+  }
+```
+
+Dan outputnya nanti menjadi :
+
+```
+Processing $150.0 via Visa/Mastercard...
+Processing $150.0 via GoPay/Ovo..
+```
+
+Dan untuk kodenya bisa diakses di [1.6.5-1-Inheritance.dart](../../../code/1/1.6.5/1.6.5-1-Inheritance.dart)
+
+### 1.6.6 Interface (`implements`)
+
+Interface adalah kontrak ketat. Jika sebuah Class meng-`implements` Class lain, ia wajib menulis ulang semua fungsi dan variabel dari Class tersebut. Berbeda dengan `extends` yang mewarisi logika, `implements` hanya mewarisi "nama tugas"-nya saja. Catatan: Di Dart, tidak ada keyword `interface`. Setiap Class secara implisit adalah interface.
+
+Analogi Interface :
+
+- Extends : Anak mewarisi bakat menyanyi ayah (bisa langsung menyanyi tanpa belajar).
+- Implements : Karyawan menandatangani kontrak kerja (harus melakukan tugas A, B, C sesuai standar perusahaan, caranya terserah karyawan).
+
+Sintaks dan strukur :
+
+```dart
+class Kontrak {
+  void tugasA() {}
+}
+
+class Pekerja implements Kontrak {
+  @override
+  void tugasA() { 
+    // Wajib ada isinya
+  }
+}
+```
+
+Contoh penerapan kode :
+
+1.6.6-1-Interface.dart
+
+```dart
+// Interface (Kontrak)
+abstract class Notifier {
+  void sendNotification(String message); // Wajib diimplementasikan
+}
+
+// Class 1: Email Notifier
+class EmailNotifier implements Notifier {
+  @override
+  void sendNotification(String message) {
+    print("Email sent: $message");
+  }
+}
+
+// Class 2: SMS Notifier
+class SMSNotifier implements Notifier {
+  @override
+  void sendNotification(String message) {
+    print("SMS sent: $message");
+  }
+}
+
+void main() {
+  Notifier email = EmailNotifier();
+  Notifier sms = SMSNotifier();
+
+  email.sendNotification("Welcome!");
+  sms.sendNotification("Your code is 1234.");
+}
+```
+
+Akan beroutput :
+
+```
+Email sent: Welcome!
+SMS sent: Your code is 1234.
+```
+
+Kode bisa diakses di [1.6.6-1-Interface.dart](../../../code/1/1.6.6/1.6.6-1-Interface.dart)
+
+### 1.6.7 Mixins (with)
+
+Mixin adalah cara menambahkan kemampuan/fitur ke sebuah Class tanpa menggunakan pewarisan (inheritance). Ini sangat berguna untuk menghindari masalah pewarisan bertingkat yang rumit.
+
+Saat ingin memberikan satu fitur spesifik ke banyak Class yang tidak berhubungan. Contoh: Fitur `Logger` (mencatat aktivitas) bisa dimiliki oleh `User`, `Product`, dan `Order`, padahal mereka tidak punya Parent yang sama.
+
+Analoginya Stiker atau aksesoris. Smartphone bisa ditempel stiker, Laptop bisa ditempel stiker, Kulkas bisa ditempel stiker. Stiker itu adalah Mixin.
+
+Sintaks dan struktur :
+
+```dart
+mixin FiturTambahan {
+  void fitur() { ... }
+}
+
+class Utama with FiturTambahan { ... }
+```
+
+Contoh kode implementasinya :
+
+1.6.7-1-Mixin.dart
+
+```dart
+// Mixin 1: Ability to log activities
+mixin Loggable {
+  void log(String message) {
+    print('[LOG]: $message'); // Reusable logic
+  }
+}
+
+// Mixin 2: Ability to validate data
+mixin Validatable {
+  bool isValid(String text) {
+    return text.isNotEmpty;
+  }
+}
+
+class User {
+  String name;
+  User(this.name);
+}
+
+// AdminUser extends User AND mixes in Loggable and Validatable
+class AdminUser extends User with Loggable, Validatable {
+  AdminUser(String name) : super(name);
+
+  void deletePost() {
+    if (isValid(name)) {
+      log('Admin $name deleted a post.'); // Using Mixin method
+    }
+  }
+}
+
+void main() {
+  var admin = AdminUser('Siti');
+  admin.deletePost(); 
+  // Output: [LOG]: Admin Siti deleted a post.
+}
+```
+
+Dan outputnya :
+
+```
+[LOG]: Admin Siti deleted a post.
+```
+
+Dan seperti biasa kode bisa diakses di [1.6.7-1-Mixin.dart](../../../code/1/1.6.7/1.6.7-1-Mixin.dart)
+
