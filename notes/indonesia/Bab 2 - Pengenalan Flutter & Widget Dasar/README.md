@@ -370,6 +370,58 @@ Analisis (Lingkungan Siap) :
 
 ## 2.3 Arsitektur Flutter
 
+### 2.3.1 Konsep Widget Tree
+
+Widget Tree (Pohon Widget) adalah representasi struktural atau hierarki dari semua widget yang membangun antarmuka pengguna (UI) aplikasi. Flutter membaca tree ini untuk menentukan apa yang harus ditampilkan di layar.
+
+Setiap aplikasi Flutter memiliki root widget (widget akar, biasanya `MaterialApp` atau `CupertinoApp` yang diberikan ke `runApp()`), dan widget ini akan memiliki child (anak) atau children (banyak anak), yang juga memiliki anak-anaknya sendiri, membentuk sebuah pohon.
+
+Konsep ini bukanlah sesuatu yang "digunakan" secara aktif, melainkan cara kerja fundamental Flutter. Memahami widget tree sangat penting untuk :
+
+1. Layouting : Mengerti mengapa `Column` menumpuk widget secara vertikal (karena `children`-nya adalah cabang-cabangnya).
+2. State Management : Memahami bagaimana state (data) mengalir dari parent (induk) ke child (anak).
+3. Debugging : Menemukan sumber masalah layout atau error.
+
+Hubungan dengan Konsep Lain :
+
+1. Widget : Widget Tree adalah struktur yang terbentuk dari komposisi (gabungan) widget-widget.
+2. Method `build()` : Fungsi `build()` pada sebuah widget bertugas mengembalikan sub-tree (bagian dari pohon) yang akan menjadi child dari widget tersebut.
+
+Analogi Sederhana (Pohon Keluarga / Silsilah)
+
+Bayangkan widget tree seperti pohon silsilah :
+
+- `MaterialApp` (di `runApp`) adalah Kakek Buyut (level 0).
+- `Scaffold` (di dalam home `MaterialApp`) adalah Anak (level 1).
+- `AppBar` dan `Body` adalah Cucu (level 2, saudara kandung, anak dari `Scaffold`).
+- Column (di dalam `Body`) adalah Cicit (level 3).
+- `Text` dan `Button` (di dalam `Column`) adalah Cicit Buyut (level 4).
+
+Sintaks dan Struktur : 
+
+Struktur tree didefinisikan secara implisit oleh cara widget di-nesting (disarangkan) di dalam kode.
+
+Template Dasar Kode: Struktur kode mencerminkan struktur pohon.
+
+```dart
+// ParentWidget (e.g., Center)
+ParentWidget(
+  // ChildWidget (e.g., Column)
+  child: ChildWidget(
+    // List of GrandChildWidgets (e.g., Text, ElevatedButton)
+    children: [
+      GrandChildWidget1(),
+      GrandChildWidget2(),
+    ],
+  ),
+)
+```
+
+Parameter yang Tersedia :
+
+- `child: Widget` : Digunakan oleh widget yang hanya bisa memiliki satu anak (Contoh : `Center`, `Padding`, `Container`).
+- `children: List<Widget>` : Digunakan oleh widget yang bisa memiliki banyak anak (Contoh : `Column`, `Row`, `ListView`, `Stack`).
+
 ## 2.4 Widget Stateless & Stateful
 
 ## 2.5 Layout Widgets
